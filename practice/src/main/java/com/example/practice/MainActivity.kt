@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.practice.ui.theme.FastCampusSNSTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+import javax.inject.Named
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -22,10 +23,20 @@ class MainActivity : ComponentActivity() {
 
     lateinit var foo: Foo
 
+    @UserQualifier(50, 180)
+    @Inject
+    lateinit var charles: User
+
+    @UserQualifier(10, 120)
+    @Inject
+    lateinit var john: User
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        assert(this::foo.isInitialized) // assert() : throws an AssertionError if the value is false
+        Log.e(TAG, "1) ${charles.name}")
+        Log.e(TAG, "2) ${john.name}")
+
         setContent {
             FastCampusSNSTheme {
                 // A surface container using the 'background' color from the theme
@@ -39,8 +50,10 @@ class MainActivity : ComponentActivity() {
         }
     }
     @Inject
-    fun injectFoo(foo: Foo){
-        Log.e(TAG, "injectFoo : ${foo.toString()}")
+    fun injectFoo(
+        @Named("foo 1") foo: Foo
+    ){
+        Log.e(TAG, "injected Foo's id : ${foo.id}")
         this.foo = foo
     }
 }
