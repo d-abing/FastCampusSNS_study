@@ -1,6 +1,7 @@
 package com.example.practice
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,11 +18,14 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    @Inject
-    lateinit var myName: MyName
+    val TAG: String = MainActivity::class.java.simpleName
+
+    lateinit var foo: Foo
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
+        assert(this::foo.isInitialized) // assert() : throws an AssertionError if the value is false
         setContent {
             FastCampusSNSTheme {
                 // A surface container using the 'background' color from the theme
@@ -29,10 +33,15 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting(myName.toString())
+                    Greeting(name = "Dabin")
                 }
             }
         }
+    }
+    @Inject
+    fun injectFoo(foo: Foo){
+        Log.e(TAG, "injectFoo : ${foo.toString()}")
+        this.foo = foo
     }
 }
 
