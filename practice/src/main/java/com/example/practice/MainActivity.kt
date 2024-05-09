@@ -1,7 +1,6 @@
 package com.example.practice
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,30 +11,28 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.practice.ui.theme.FastCampusSNSTheme
+import dagger.Lazy
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import javax.inject.Named
+import javax.inject.Provider
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     val TAG: String = MainActivity::class.java.simpleName
 
-    lateinit var foo: Foo
-
-    @UserQualifier(50, 180)
     @Inject
-    lateinit var charles: User
+    lateinit var providerFoo1: Provider<Foo>
 
-    @UserQualifier(10, 120)
     @Inject
-    lateinit var john: User
+    lateinit var providerFoo2: Lazy<Foo>
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
-        Log.e(TAG, "1) ${charles.name}")
-        Log.e(TAG, "2) ${john.name}")
+        val foo1: Foo = providerFoo1.get()
+        val foo2: Foo = providerFoo2.get()
+
+        assert(foo1 !== foo2)
 
         setContent {
             FastCampusSNSTheme {
@@ -48,13 +45,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
-    @Inject
-    fun injectFoo(
-        @Named("foo 1") foo: Foo
-    ){
-        Log.e(TAG, "injected Foo's id : ${foo.id}")
-        this.foo = foo
     }
 }
 

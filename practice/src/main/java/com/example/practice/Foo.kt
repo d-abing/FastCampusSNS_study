@@ -1,3 +1,7 @@
 package com.example.practice
 
-class Foo constructor(val id: String)
+import javax.inject.Inject
+import javax.inject.Singleton
+
+class Foo @Inject constructor(){
+}
