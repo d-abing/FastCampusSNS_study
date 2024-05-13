@@ -1,7 +1,6 @@
 package com.example.practice
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.practice.ui.theme.FastCampusSNSTheme
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.Optional
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -22,16 +20,13 @@ class MainActivity : ComponentActivity() {
     val TAG: String = MainActivity::class.java.simpleName
 
     @Inject
-    lateinit var optionalFoo: Optional<Foo>
+    lateinit var str: Set<String>
+
+    @Inject
+    lateinit var map: Map<Animal, String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        assert(optionalFoo != null)
-        Log.e(TAG, "isPresent = ${optionalFoo.isPresent}")
-        val foo: Foo = optionalFoo.get()
-        Log.e(TAG, "foo = $foo")
-
         setContent {
             FastCampusSNSTheme {
                 // A surface container using the 'background' color from the theme
@@ -39,7 +34,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting(name = "Dabin")
+                    Greeting(map.toString())
                 }
             }
         }
