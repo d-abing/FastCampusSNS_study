@@ -1,14 +1,12 @@
 package com.example.practice
 
-import dagger.BindsOptionalOf
-import dagger.Module
+import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 
-@Module
+@EntryPoint
 @InstallIn(SingletonComponent::class)
-abstract class FooModule {
+interface FooEntryPoint {
 
-    @BindsOptionalOf
-    abstract fun optionalFoo(): Foo
+    fun getFoo(): Foo
 }

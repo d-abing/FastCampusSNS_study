@@ -1,3 +1,7 @@
 package com.example.practice
 
-class Foo
+import javax.inject.Inject
+
+class Foo @Inject constructor() {
+
+}

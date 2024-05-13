@@ -12,21 +12,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.practice.ui.theme.FastCampusSNSTheme
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
-    val TAG: String = MainActivity::class.java.simpleName
-
-    @Inject
-    lateinit var str: Set<String>
-
-    @Inject
-    lateinit var map: Map<Animal, String>
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val fooManager = FooManager()
+        fooManager.doSomething(this.applicationContext)
         setContent {
             FastCampusSNSTheme {
                 // A surface container using the 'background' color from the theme
@@ -34,7 +26,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting(map.toString())
+                    Greeting("Dabin")
                 }
             }
         }
