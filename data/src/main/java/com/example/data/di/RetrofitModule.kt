@@ -1,6 +1,6 @@
 package com.example.data.di
 
-import com.example.data.R
+import com.example.data.retrofit.FCInterceptor
 import com.example.data.retrofit.UserService
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
@@ -19,9 +19,10 @@ val FC_HOST = ""
 class RetrofitModule {
 
     @Provides
-    fun provideOkHttpClient(): OkHttpClient {
+    fun provideOkHttpClient(interceptor: FCInterceptor): OkHttpClient {
         return OkHttpClient
             .Builder()
+            .addInterceptor(interceptor)
             .build()
     }
 

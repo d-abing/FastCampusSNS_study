@@ -21,12 +21,12 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.presentation.MainActivity
 import com.example.presentation.component.FCButton
 import com.example.presentation.component.FCTextField
+import com.example.presentation.main.MainActivity
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
-import theme.FastCampusSNSTheme
+import theme.ConnectedTheme
 
 @Composable
 fun LoginScreen(
@@ -149,7 +149,7 @@ private fun LoginScreen(
 @Preview
 @Composable
 private fun LoginScreenPreview() {
-    FastCampusSNSTheme {
+    ConnectedTheme {
         LoginScreen(
             id = "fast",
             password = "campus",

@@ -23,7 +23,7 @@ private val ColorScheme = lightColorScheme(
 )
 
 @Composable
-fun FastCampusSNSTheme(
+fun ConnectedTheme(
     content: @Composable () -> Unit
 ) {
     val darkTheme: Boolean = isSystemInDarkTheme()
