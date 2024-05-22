@@ -1,5 +1,6 @@
 package com.example.presentation.login
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -11,11 +12,45 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.presentation.component.FCButton
 import com.example.presentation.component.FCTextField
+import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 import theme.FastCampusSNSTheme
+
+@Composable
+fun SignUpScreen(
+    viewModel: SignUpViewModel = hiltViewModel(),
+    onNavigateToLoginScreen: ()->Unit
+) {
+
+    val state = viewModel.collectAsState().value
+    val context = LocalContext.current
+    viewModel.collectSideEffect{ sideEffect ->
+        when(sideEffect) {
+            is SignUpSideEffect.Toast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
+            SignUpSideEffect.NavigateToLoginScreen -> onNavigateToLoginScreen()
+        }
+    }
+
+    SignUpScreen(
+        id = state.id,
+        username = state.username,
+        password1 = state.password,
+        password2 = state.repeatPassword,
+        onIdChange = viewModel::onIdChange,
+        onUsernameChange = viewModel::onUsernameChange,
+        onPassword1Change = viewModel::onPasswordChange,
+        onPassword2Change = viewModel::onRepeatPasswordChange,
+        onSignUpClick = viewModel::onSignUpClick
+    )
+}
 
 @Composable
 fun SignUpScreen(
@@ -93,6 +128,7 @@ fun SignUpScreen(
                         .fillMaxWidth()
                     ,
                     value = password1,
+                    visualTransformation = PasswordVisualTransformation(),
                     onValueChange = onPassword1Change
                 )
                 Text(
@@ -106,6 +142,7 @@ fun SignUpScreen(
                         .fillMaxWidth()
                     ,
                     value = password2,
+                    visualTransformation = PasswordVisualTransformation(),
                     onValueChange = onPassword2Change
                 )
 
