@@ -1,8 +1,12 @@
 package com.example.presentation.main.setting
 
+import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.domain.usecase.login.ClearTokenUseCase
-import com.example.domain.usecase.login.GetMyUserUseCase
+import com.example.domain.usecase.main.setting.GetMyUserUseCase
+import com.example.domain.usecase.main.setting.SetMyUserUseCase
+import com.example.domain.usecase.main.setting.SetProfileImageUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import org.orbitmvi.orbit.Container
@@ -18,6 +22,8 @@ import javax.inject.Inject
 class SettingViewModel @Inject constructor(
     private val clearTokenUseCase: ClearTokenUseCase,
     private val getMyUserUseCase: GetMyUserUseCase,
+    private val setMyUserUseCase: SetMyUserUseCase,
+    private val setProfileImageUseCase: SetProfileImageUseCase
 ): ViewModel(), ContainerHost<SettingState, SettingSideEffect> {
 
     override val container: Container<SettingState, SettingSideEffect> = container(
@@ -26,6 +32,7 @@ class SettingViewModel @Inject constructor(
             this.exceptionHandler = CoroutineExceptionHandler{ _, throwable ->
                 intent {
                     postSideEffect(SettingSideEffect.Toast(throwable.message.orEmpty()))
+                    Log.e("SettingViewModel", throwable.message.toString())
                 }
             }
         }
@@ -43,6 +50,21 @@ class SettingViewModel @Inject constructor(
                 username = user.username
             )
         }
+    }
+
+
+    fun onUsernameChange(username: String) = intent {
+        setMyUserUseCase(
+            username = username
+        ).getOrThrow()
+        load()
+    }
+
+    fun onImageChange(contentUri: Uri?) = intent {
+        setProfileImageUseCase(
+            contentUri = contentUri.toString()
+        ).getOrThrow()
+        load()
     }
 
     fun onLogoutClick() = intent {

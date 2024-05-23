@@ -1,6 +1,7 @@
 package com.example.data.di
 
 import com.example.data.retrofit.FCInterceptor
+import com.example.data.retrofit.FileService
 import com.example.data.retrofit.UserService
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
@@ -41,5 +42,10 @@ class RetrofitModule {
     @Provides
     fun provideUserService(retrofit: Retrofit): UserService {
         return retrofit.create(UserService::class.java)
+    }
+
+    @Provides
+    fun provideFileService(retrofit: Retrofit): FileService {
+        return retrofit.create(FileService::class.java)
     }
 }
