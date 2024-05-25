@@ -8,4 +8,4 @@ data class Image (
     val name: String,
     val size: Long,
     val mimeType: String,
-)
+) : java.io.Serializable

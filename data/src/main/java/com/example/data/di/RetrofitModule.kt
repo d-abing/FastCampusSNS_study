@@ -1,5 +1,6 @@
 package com.example.data.di
 
+import com.example.data.retrofit.BoardService
 import com.example.data.retrofit.FCInterceptor
 import com.example.data.retrofit.FileService
 import com.example.data.retrofit.UserService
@@ -47,5 +48,10 @@ class RetrofitModule {
     @Provides
     fun provideFileService(retrofit: Retrofit): FileService {
         return retrofit.create(FileService::class.java)
+    }
+
+    @Provides
+    fun provideBoardService(retrofit: Retrofit): BoardService {
+        return retrofit.create(BoardService::class.java)
     }
 }

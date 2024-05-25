@@ -1,6 +1,5 @@
 package com.example.data.usecase.main.setting
 
-import com.example.data.di.FC_HOST
 import com.example.domain.model.Image
 import com.example.domain.usecase.file.GetImageUseCase
 import com.example.domain.usecase.file.UploadImageUseCase
@@ -24,6 +23,6 @@ class SetProfileImageUseCaseImpl @Inject constructor(
         // 2. 이미지 서버에 업로드 하기
         val imagePath = uploadImageUseCase(image).getOrThrow()
         // 3. 내 정보 업데이트 하기
-        setMyUserUseCase(profileImageUrl = "$FC_HOST/$imagePath").getOrThrow()
+        setMyUserUseCase(profileImageUrl = "$imagePath").getOrThrow()
     }
 }
