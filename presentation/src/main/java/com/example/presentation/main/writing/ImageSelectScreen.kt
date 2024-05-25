@@ -40,15 +40,17 @@ import theme.ConnectedTheme
 
 @Composable
 fun ImageSelectScreen(
-    viewModel: WritingViewModel
+    viewModel: WritingViewModel,
+    onBackClick: ()->Unit,
+    onNextClick: ()->Unit,
 ) {
     val state = viewModel.collectAsState().value
     
     ImageSelectScreen(
         selectedImages = state.selectedImages,
         images = state.images,
-        onBackClick = {},
-        onNextClick = {},
+        onBackClick = onBackClick,
+        onNextClick = onNextClick,
         onItemClick = viewModel::onItemClick
     )
 }
@@ -81,7 +83,7 @@ private fun ImageSelectScreen(
                          }
                      },
                      actions = {
-                         TextButton(onClick = { onNextClick }) {
+                         TextButton(onClick = onNextClick ) {
                              Text(text = "다음")
                          }
                      }
