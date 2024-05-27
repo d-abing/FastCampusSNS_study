@@ -11,7 +11,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.presentation.model.main.board.BoardCardModel
@@ -20,7 +19,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
 fun BoardScreen(
-    viewModel: BoardViewModel = hiltViewModel()
+    viewModel: BoardViewModel
 ) {
     val context = LocalContext.current
     val state = viewModel.collectAsState().value
@@ -33,6 +32,7 @@ fun BoardScreen(
     }
     BoardScreen(
         boardCardModels = state.boardCardModelFlow.collectAsLazyPagingItems(),
+        deleteBoardIds = state.deleteBoardIds,
         onOptionClick = { modelForDialog = it },
         onReplyClick = {},
     )
@@ -46,10 +46,11 @@ fun BoardScreen(
 @Composable
 private fun BoardScreen(
     boardCardModels: LazyPagingItems<BoardCardModel>,
+    deleteBoardIds: Set<Long> = emptySet(),
     onOptionClick: (BoardCardModel)->Unit,
     onReplyClick: (BoardCardModel)->Unit,
 
-) {
+    ) {
     Surface {
         LazyColumn(
             modifier = Modifier.fillMaxSize()
@@ -59,13 +60,15 @@ private fun BoardScreen(
                 key = { index -> boardCardModels[index]?.boardId ?: index }
             ) {index ->
                 boardCardModels[index]?.run {
-                    BoardCard(
-                        username = this.username,
-                        images = this.images,
-                        text = this.text,
-                        onOptionClick = { onOptionClick(this) },
-                        onReplyClick = { onReplyClick(this) },
-                    )
+                    if (!deleteBoardIds.contains(this.boardId)) {
+                        BoardCard(
+                            username = this.username,
+                            images = this.images,
+                            text = this.text,
+                            onOptionClick = { onOptionClick(this) },
+                            onReplyClick = { onReplyClick(this) },
+                        )
+                    }
                 }
             }
         }

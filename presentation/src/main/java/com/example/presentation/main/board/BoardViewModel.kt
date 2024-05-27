@@ -41,7 +41,7 @@ class BoardViewModel @Inject constructor(
         }
     }
 
-    private fun load() = intent {
+    fun load() = intent {
         val boardFlow = getBoardUseCase().getOrThrow()
         val boardCardModelFlow = boardFlow.map { pagingData ->
             pagingData.map { board -> board.toUiModel() }
@@ -54,14 +54,19 @@ class BoardViewModel @Inject constructor(
         }
     }
 
-    fun onBoardDelete(boardCardModel: BoardCardModel) = intent {
-        deleteBoardUseCase(boardCardModel.boardId).getOrThrow()
-        load()
+    fun onBoardDelete(model: BoardCardModel) = intent {
+        deleteBoardUseCase(model.boardId).getOrThrow()
+        reduce {
+            state.copy(
+                deleteBoardIds = state.deleteBoardIds + model.boardId
+            )
+        }
     }
 }
 
 data class BoardState(
-    val boardCardModelFlow: Flow<PagingData<BoardCardModel>> = emptyFlow()
+    val boardCardModelFlow: Flow<PagingData<BoardCardModel>> = emptyFlow(),
+    val deleteBoardIds: Set<Long> = emptySet()
 )
 
 sealed interface BoardSideEffect{
