@@ -1,4 +1,4 @@
-package com.example.data.model
+package com.example.data.model.comment
 
 import com.example.domain.model.Comment
 import kotlinx.serialization.Serializable

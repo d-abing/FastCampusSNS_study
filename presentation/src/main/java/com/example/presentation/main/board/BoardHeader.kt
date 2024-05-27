@@ -21,6 +21,7 @@ import theme.ConnectedTheme
 
 @Composable
 fun BoardHeader(
+    isMine: Boolean,
     modifier: Modifier = Modifier,
     profileImageUrl: String? = null,
     username: String,
@@ -45,12 +46,14 @@ fun BoardHeader(
             style = MaterialTheme.typography.titleMedium
         )
         // 옵션 버튼
-        Spacer(modifier = Modifier.weight(1f))
-        IconButton(onClick = onOptionClick ) {
-            Icon(
-                imageVector = Icons.Filled.MoreVert,
-                contentDescription = "옵션"
-            )
+        if(isMine) {
+            Spacer(modifier = Modifier.weight(1f))
+            IconButton(onClick = onOptionClick ) {
+                Icon(
+                    imageVector = Icons.Filled.MoreVert,
+                    contentDescription = "옵션"
+                )
+            }
         }
     }
 }
@@ -61,6 +64,7 @@ private fun BoardHeaderPreview() {
     ConnectedTheme {
         Surface {
             BoardHeader(
+                isMine = true,
                 profileImageUrl = null,
                 username = "Fast Campus",
                 onOptionClick = {}

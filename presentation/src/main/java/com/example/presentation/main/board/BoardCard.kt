@@ -27,13 +27,16 @@ import theme.ConnectedTheme
 
 @Composable
 fun BoardCard(
+    isMine: Boolean,
+    boardId: Long,
     profileImageUrl: String? = null,
     username: String,
     images: List<String>,
     text: String,
     comments: List<Comment>,
     onOptionClick: ()->Unit,
-    onDeleteComment: (Comment)->Unit,
+    onDeleteComment: (Long, Comment)->Unit,
+    onCommentSend: (Long, String)->Unit
 ) {
     var commentDialogVisible by remember { mutableStateOf(false) }
     Surface {
@@ -50,6 +53,7 @@ fun BoardCard(
         ) {
             //헤더
             BoardHeader(
+                isMine = isMine,
                 modifier = Modifier.fillMaxWidth(),
                 profileImageUrl = profileImageUrl,
                 username = username,
@@ -91,7 +95,7 @@ fun BoardCard(
                     )
                 }
             }
-            // 댓글버튼
+            // 댓글 버튼
             TextButton(
                 modifier = Modifier
                     .padding(top = 8.dp)
@@ -101,17 +105,19 @@ fun BoardCard(
                     commentDialogVisible = true
                 }
             ) {
-                Text(text = "댓글")
+                Text(text = "${comments.size} 댓글")
             }
         }
     }
 
     CommentDialog(
+        isMine = isMine,
         visible = commentDialogVisible,
         comments = comments,
         onDismissRequest = { commentDialogVisible = false },
         onCloseClick = { commentDialogVisible = false },
-        onDeleteComment = onDeleteComment
+        onDeleteComment = { comment -> onDeleteComment(boardId, comment) },
+        onCommentSend = { text -> onCommentSend(boardId, text) }
     )
 }
 
@@ -120,13 +126,20 @@ fun BoardCard(
 private fun BoardCardPreview() {
     ConnectedTheme {
         BoardCard(
+            isMine = true,
+            boardId = -1L,
             profileImageUrl = null,
             username = "Fast Campus",
             images = emptyList(),
             text = "내용\n내용\n내용\n",
             comments = emptyList(),
             onOptionClick = {},
-            onDeleteComment = {},
+            onDeleteComment = { _, _ ->
+
+            },
+            onCommentSend = { _, _ ->
+
+            },
         )
     }
 }

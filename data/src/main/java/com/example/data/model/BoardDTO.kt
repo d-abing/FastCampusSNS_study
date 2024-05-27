@@ -1,5 +1,7 @@
 package com.example.data.model
 
+import com.example.data.model.comment.CommentDTO
+import com.example.data.model.comment.toDomainModel
 import com.example.domain.model.Board
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
@@ -21,6 +23,7 @@ data class BoardDTO (
 fun BoardDTO.toDomainModel(): Board{
     val contentParam = Json.decodeFromString<ContentParam>(content)
     return Board(
+        userId = this.createUserId,
         id = this.id,
         title = this.title,
         content = contentParam.text,
