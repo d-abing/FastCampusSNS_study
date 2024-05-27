@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.domain.model.Comment
 import com.example.presentation.model.main.board.BoardCardModel
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -34,7 +35,7 @@ fun BoardScreen(
         boardCardModels = state.boardCardModelFlow.collectAsLazyPagingItems(),
         deleteBoardIds = state.deleteBoardIds,
         onOptionClick = { modelForDialog = it },
-        onReplyClick = {},
+        onDeleteComment = viewModel::onDeleteComment
     )
     BoardOptionDialog(
         model = modelForDialog,
@@ -48,8 +49,7 @@ private fun BoardScreen(
     boardCardModels: LazyPagingItems<BoardCardModel>,
     deleteBoardIds: Set<Long> = emptySet(),
     onOptionClick: (BoardCardModel)->Unit,
-    onReplyClick: (BoardCardModel)->Unit,
-
+    onDeleteComment: (Comment)->Unit,
     ) {
     Surface {
         LazyColumn(
@@ -65,8 +65,9 @@ private fun BoardScreen(
                             username = this.username,
                             images = this.images,
                             text = this.text,
+                            comments = this.comments,
                             onOptionClick = { onOptionClick(this) },
-                            onReplyClick = { onReplyClick(this) },
+                            onDeleteComment = onDeleteComment
                         )
                     }
                 }

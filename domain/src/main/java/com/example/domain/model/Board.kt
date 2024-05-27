@@ -1,7 +1,5 @@
 package com.example.domain.model
 
-import kotlinx.serialization.Serializable
-
 data class Board (
     val id: Long,
     val title: String,
@@ -9,4 +7,5 @@ data class Board (
     val images: List<String>,
     val username: String,
     val profileImageUrl: String,
+    val comments: List<Comment>
 )

@@ -3,6 +3,7 @@ package com.example.presentation.main.board
 import androidx.lifecycle.ViewModel
 import androidx.paging.PagingData
 import androidx.paging.map
+import com.example.domain.model.Comment
 import com.example.domain.usecase.main.board.DeleteBoardUseCase
 import com.example.domain.usecase.main.board.GetBoardUseCase
 import com.example.presentation.model.main.board.BoardCardModel
@@ -61,6 +62,10 @@ class BoardViewModel @Inject constructor(
                 deleteBoardIds = state.deleteBoardIds + model.boardId
             )
         }
+    }
+
+    fun onDeleteComment(comment: Comment) = intent {
+
     }
 }
 

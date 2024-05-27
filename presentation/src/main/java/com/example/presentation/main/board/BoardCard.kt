@@ -20,7 +20,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.domain.model.Comment
 import com.example.presentation.component.FCImagePager
+import com.example.presentation.main.board.comment.CommentDialog
 import theme.ConnectedTheme
 
 @Composable
@@ -29,14 +31,19 @@ fun BoardCard(
     username: String,
     images: List<String>,
     text: String,
+    comments: List<Comment>,
     onOptionClick: ()->Unit,
-    onReplyClick: ()->Unit
+    onDeleteComment: (Comment)->Unit,
 ) {
+    var commentDialogVisible by remember { mutableStateOf(false) }
     Surface {
         Column (
             modifier = Modifier
                 .padding(horizontal = 16.dp, vertical = 8.dp)
-                .background(color = MaterialTheme.colorScheme.primaryContainer, shape = RoundedCornerShape(16.dp))
+                .background(
+                    color = MaterialTheme.colorScheme.primaryContainer,
+                    shape = RoundedCornerShape(16.dp)
+                )
                 .padding(horizontal = 4.dp, vertical = 4.dp)
                 .fillMaxWidth()
 
@@ -51,7 +58,9 @@ fun BoardCard(
             // 이미지 페이저
             if(images.isNotEmpty()) {
                 FCImagePager(
-                    modifier = Modifier.fillMaxWidth().aspectRatio(1f),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(1f),
                     images = images
                 )
             }
@@ -88,12 +97,22 @@ fun BoardCard(
                     .padding(top = 8.dp)
                     .padding(horizontal = 8.dp)
                     .align(Alignment.End),
-                onClick = onReplyClick
+                onClick = {
+                    commentDialogVisible = true
+                }
             ) {
                 Text(text = "댓글")
             }
         }
     }
+
+    CommentDialog(
+        visible = commentDialogVisible,
+        comments = comments,
+        onDismissRequest = { commentDialogVisible = false },
+        onCloseClick = { commentDialogVisible = false },
+        onDeleteComment = onDeleteComment
+    )
 }
 
 @Preview
@@ -105,8 +124,9 @@ private fun BoardCardPreview() {
             username = "Fast Campus",
             images = emptyList(),
             text = "내용\n내용\n내용\n",
+            comments = emptyList(),
             onOptionClick = {},
-            onReplyClick = {},
+            onDeleteComment = {},
         )
     }
 }

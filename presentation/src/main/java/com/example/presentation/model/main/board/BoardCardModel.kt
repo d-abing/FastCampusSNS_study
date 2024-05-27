@@ -1,6 +1,7 @@
 package com.example.presentation.model.main.board
 
 import com.example.domain.model.Board
+import com.example.domain.model.Comment
 import javax.annotation.concurrent.Immutable
 
 @Immutable
@@ -8,7 +9,8 @@ data class BoardCardModel (
     val boardId: Long,
     val username: String,
     val images: List<String>,
-    val text: String
+    val text: String,
+    val comments: List<Comment>
 )
 
 fun Board.toUiModel(): BoardCardModel {
@@ -16,6 +18,7 @@ fun Board.toUiModel(): BoardCardModel {
         boardId = this.id,
         username = this.username,
         images = this.images,
-        text = this.content
+        text = this.content,
+        comments = this.comments
     )
 }
