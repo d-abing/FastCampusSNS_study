@@ -18,9 +18,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.presentation.component.FCImagePager
-import com.example.presentation.component.FCTextField
+import com.example.presentation.main.writing.toolbar.WritingToolbar
+import com.mohamedrejeb.richeditor.model.RichTextState
+import com.mohamedrejeb.richeditor.ui.BasicRichTextEditor
 import org.orbitmvi.orbit.compose.collectAsState
 import theme.ConnectedTheme
 
@@ -31,9 +35,8 @@ fun WritingScreen(
 ) {
     val state = viewModel.collectAsState().value
     WritingScreen(
+        richTextState = state.richTextState,
         images = state.selectedImages.map { it.uri },
-        text = state.text,
-        onTextChange = viewModel::onTextChange,
         onBackClick = onBackClick,
         onPostClick = viewModel::onPostClick
     )
@@ -41,10 +44,9 @@ fun WritingScreen(
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-fun WritingScreen(
+private fun WritingScreen(
+    richTextState: RichTextState,
     images: List<String>,
-    text: String,
-    onTextChange: (String)->Unit,
     onBackClick: ()->Unit,
     onPostClick: ()->Unit,
 ) {
@@ -76,19 +78,33 @@ fun WritingScreen(
             content = { paddingValues ->
                 Column(modifier = Modifier.padding(paddingValues)) {
                     FCImagePager(
-                        modifier = Modifier.fillMaxWidth().weight(2f),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(2f),
                         images = images
                     )
                     Divider()
-                    FCTextField(
+                    BasicRichTextEditor(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .weight(3f)
-                        ,
-                        value = text,
-                        onValueChange = onTextChange
+                            .weight(3f),
+                        state = richTextState,
+                        cursorBrush = SolidColor(Color.White),
+                        textStyle = MaterialTheme.typography.bodyLarge.copy(color = Color.White),
+                        decorationBox = { innerTextField ->
+                            if(richTextState.annotatedString.isEmpty()) {
+                                Text(text = "문구를 입력해 주세요")
+                            }
+                            innerTextField()
+                        }
                     )
                 }
+            },
+            bottomBar = {
+                WritingToolbar(
+                    modifier = Modifier.fillMaxWidth(),
+                    richTextState = richTextState
+                )
             }
         )
     }
@@ -99,9 +115,8 @@ fun WritingScreen(
 fun WritingScreenPreview() {
     ConnectedTheme {
         WritingScreen(
+            richTextState = RichTextState(),
             images = emptyList(),
-            text = "",
-            onTextChange = {},
             onBackClick = {},
             onPostClick = {}
         )

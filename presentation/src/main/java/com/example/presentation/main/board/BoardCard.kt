@@ -17,12 +17,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.domain.model.Comment
 import com.example.presentation.component.FCImagePager
 import com.example.presentation.main.board.comment.CommentDialog
+import com.mohamedrejeb.richeditor.model.RichTextState
+import com.mohamedrejeb.richeditor.ui.BasicRichText
 import theme.ConnectedTheme
 
 @Composable
@@ -32,7 +35,7 @@ fun BoardCard(
     profileImageUrl: String? = null,
     username: String,
     images: List<String>,
-    text: String,
+    richTextSate: RichTextState,
     comments: List<Comment>,
     onOptionClick: ()->Unit,
     onDeleteComment: (Long, Comment)->Unit,
@@ -68,17 +71,18 @@ fun BoardCard(
                     images = images
                 )
             }
-            var maxLines by remember(text) { mutableStateOf(1) }
+            var maxLines by remember(richTextSate) { mutableStateOf(1) }
             var showMore by remember { mutableStateOf(false) }
             //내용(텍스트)
-            Text(
+            BasicRichText(
                 modifier = Modifier
                     .padding(top = 4.dp)
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp),
-                text = text,
+                state = richTextSate,
                 maxLines = maxLines,
                 overflow = TextOverflow.Ellipsis,
+                style = TextStyle.Default.copy(color = MaterialTheme.colorScheme.onPrimary),
                 onTextLayout = { textLayoutResult ->
                     showMore = textLayoutResult.didOverflowHeight
                 }
@@ -131,7 +135,7 @@ private fun BoardCardPreview() {
             profileImageUrl = null,
             username = "Fast Campus",
             images = emptyList(),
-            text = "내용\n내용\n내용\n",
+            richTextSate = RichTextState(),
             comments = emptyList(),
             onOptionClick = {},
             onDeleteComment = { _, _ ->

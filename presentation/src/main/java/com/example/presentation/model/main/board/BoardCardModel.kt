@@ -2,6 +2,7 @@ package com.example.presentation.model.main.board
 
 import com.example.domain.model.Board
 import com.example.domain.model.Comment
+import com.mohamedrejeb.richeditor.model.RichTextState
 import javax.annotation.concurrent.Immutable
 
 @Immutable
@@ -10,7 +11,7 @@ data class BoardCardModel (
     val boardId: Long,
     val username: String,
     val images: List<String>,
-    val text: String,
+    val richTextState: RichTextState,
     val comments: List<Comment>
 )
 
@@ -20,7 +21,7 @@ fun Board.toUiModel(): BoardCardModel {
         boardId = this.id,
         username = this.username,
         images = this.images,
-        text = this.content,
+        richTextState = RichTextState().apply { setHtml(this@toUiModel.content) },
         comments = this.comments
     )
 }
