@@ -45,18 +45,18 @@ fun UsernameDialog(
                     Row {
                         TextButton(
                             modifier = Modifier.weight(1f),
+                            onClick = onDismissRequest
+                        ) {
+                            Text(text = "취소")
+                        }
+                        TextButton(
+                            modifier = Modifier.weight(1f),
                             onClick = {
                                 onUsernameChange(username)
                                 onDismissRequest()
                             }
                         ) {
                             Text(text = "변경")
-                        }
-                        TextButton(
-                            modifier = Modifier.weight(1f),
-                            onClick = onDismissRequest
-                        ) {
-                            Text(text = "취소")
                         }
                     }
                 }

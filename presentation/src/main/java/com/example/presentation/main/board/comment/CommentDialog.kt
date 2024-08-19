@@ -25,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -35,7 +36,8 @@ import theme.ConnectedTheme
 
 @Composable
 fun CommentDialog(
-    isMine: Boolean,
+    isMyBoard: Boolean,
+    userId: Long,
     visible: Boolean,
     comments: List<Comment>,
     onDismissRequest: ()->Unit,
@@ -78,7 +80,8 @@ fun CommentDialog(
                                 val comment = comments[index]
                                 CommentCard(
                                     modifier = Modifier,
-                                    isMine = isMine,
+                                    isMyBoard = isMyBoard,
+                                    isMyComment = comment.userId == userId,
                                     profileImageUrl = comment.profileImageUrl,
                                     username = comment.username,
                                     text = comment.text,
@@ -93,11 +96,14 @@ fun CommentDialog(
                             FCTextField(
                                 modifier = Modifier.weight(1f),
                                 value = text,
+                                imeAction = ImeAction.Done,
                                 onValueChange = { text = it }
                             )
                             IconButton(onClick = {
-                                onCommentSend(text)
-                                text = ""
+                                if (text.isNotEmpty()) {
+                                    onCommentSend(text)
+                                    text = ""
+                                }
                             }) {
                                 Icon(
                                     imageVector = Icons.Filled.Send,
@@ -117,7 +123,8 @@ fun CommentDialog(
 private fun CommentDialogPreview() {
     ConnectedTheme {
         CommentDialog(
-            isMine = true,
+            isMyBoard = true,
+            userId = -1L,
             visible = true,
             comments = emptyList(),
             onDismissRequest = {},

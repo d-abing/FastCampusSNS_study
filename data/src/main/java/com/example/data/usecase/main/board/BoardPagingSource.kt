@@ -30,7 +30,7 @@ class BoardPagingSource @Inject constructor(
             return LoadResult.Page(
                 data = response.data.map { it.toDomainModel() },
                 prevKey = null,
-                nextKey = if(size == loadSize) page+1 else null
+                nextKey = if(size == loadSize) page + 1 else null
             )
         } catch (e: Exception) {
             return LoadResult.Error(e)

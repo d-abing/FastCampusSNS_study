@@ -1,6 +1,7 @@
 package com.example.presentation.component
 
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextField
@@ -8,6 +9,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 
@@ -17,6 +19,7 @@ fun FCTextField(
     modifier: Modifier,
     value: String,
     visualTransformation: VisualTransformation = VisualTransformation.None,
+    imeAction: ImeAction,
     onValueChange:(String) -> Unit
 ) {
     TextField(
@@ -30,6 +33,9 @@ fun FCTextField(
             disabledIndicatorColor = Color.Transparent,
         ),
         visualTransformation = visualTransformation,
+        keyboardOptions = KeyboardOptions.Default.copy(
+            imeAction = imeAction
+        ),
         shape = RoundedCornerShape(8.dp),
     )
 }

@@ -6,8 +6,9 @@ import okhttp3.MediaType
 import okhttp3.RequestBody
 import okio.BufferedSink
 import okio.source
+import java.io.FileNotFoundException
 
-class UriRequestBody constructor(
+class UriRequestBody (
     val contentUri: String,
     val getInputStreamUseCase: GetInputStreamUseCase,
     val contentType: MediaType? = null,
@@ -28,12 +29,10 @@ class UriRequestBody constructor(
                 contentUri = contentUri
             )
                 .getOrThrow()
-                .use {
-                        inputStream -> sink.writeAll(
-                    inputStream.source()
-                )
+                .use { inputStream ->
+                    sink.writeAll(inputStream.source())
                 }
-        } catch (e: FileSystemException) {
+        } catch (e: FileNotFoundException) {
             Log.e("UriRequestBody", e.message.orEmpty())
         }
 

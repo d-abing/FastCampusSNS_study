@@ -18,7 +18,7 @@ interface UserService {
     @POST("users/sign-up")
     suspend fun signUp(
         @Body requestBody: RequestBody
-    ): CommonResponse<Long>
+    ): CommonResponse<Long?>
 
     @GET("users/my-page")
     suspend fun getMyPage(): CommonResponse<UserDTO>

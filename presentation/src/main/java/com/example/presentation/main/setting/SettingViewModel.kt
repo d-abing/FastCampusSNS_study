@@ -52,7 +52,6 @@ class SettingViewModel @Inject constructor(
         }
     }
 
-
     fun onUsernameChange(username: String) = intent {
         setMyUserUseCase(
             username = username

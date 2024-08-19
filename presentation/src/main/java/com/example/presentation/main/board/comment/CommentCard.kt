@@ -23,7 +23,8 @@ import theme.ConnectedTheme
 @Composable
 fun CommentCard(
     modifier: Modifier = Modifier,
-    isMine: Boolean,
+    isMyBoard: Boolean,
+    isMyComment: Boolean,
     profileImageUrl: String? = null,
     username: String = "",
     text: String = "",
@@ -47,7 +48,7 @@ fun CommentCard(
                 Text(text = text)
             }
             Spacer(modifier = Modifier.weight(1f))
-            if (isMine) {
+            if (isMyBoard || isMyComment) {
                 IconButton(onClick = onDeleteComment) {
                     Icon(
                         modifier = Modifier.size(16.dp),
@@ -66,7 +67,8 @@ fun CommentCard(
 private fun CommentCardPreview() {
     ConnectedTheme {
         CommentCard(
-            isMine = true,
+            isMyBoard = true,
+            isMyComment = true,
             username = "Dabin",
             text = "안녕하세요!",
             onDeleteComment = {}

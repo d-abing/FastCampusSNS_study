@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -110,6 +111,7 @@ private fun LoginScreen(
                         .padding(top = 8.dp)
                         .fillMaxWidth(),
                     value = id,
+                    imeAction = ImeAction.Next,
                     onValueChange = onIdChange)
                 Text(
                     modifier = Modifier.padding(top = 16.dp),
@@ -121,6 +123,7 @@ private fun LoginScreen(
                         .padding(top = 8.dp)
                         .fillMaxWidth(),
                     value = password,
+                    imeAction = ImeAction.Done,
                     visualTransformation = PasswordVisualTransformation(),
                     onValueChange = onPasswordChange
                 )

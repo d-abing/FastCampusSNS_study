@@ -24,7 +24,7 @@ class GetImageUseCaseImpl @Inject constructor(
             null,
             null,
             null
-        )
+         )
 
         return cursor?.use {c ->
             c.moveToNext()

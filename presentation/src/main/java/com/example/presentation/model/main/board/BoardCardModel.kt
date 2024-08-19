@@ -1,6 +1,6 @@
 package com.example.presentation.model.main.board
 
-import com.example.domain.model.Board
+import com.example.domain.model. Board
 import com.example.domain.model.Comment
 import com.mohamedrejeb.richeditor.model.RichTextState
 import javax.annotation.concurrent.Immutable

@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.example.presentation.component.FCImagePager
 import com.example.presentation.main.writing.toolbar.WritingToolbar
 import com.mohamedrejeb.richeditor.model.RichTextState
@@ -80,20 +81,21 @@ private fun WritingScreen(
                     FCImagePager(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .weight(2f),
+                            .weight(1f),
                         images = images
                     )
                     Divider()
                     BasicRichTextEditor(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .weight(3f),
+                            .padding(12.dp)
+                            .weight(1f),
                         state = richTextState,
                         cursorBrush = SolidColor(Color.White),
                         textStyle = MaterialTheme.typography.bodyLarge.copy(color = Color.White),
                         decorationBox = { innerTextField ->
                             if(richTextState.annotatedString.isEmpty()) {
-                                Text(text = "문구를 입력해 주세요")
+                                Text(text = "내용을 입력해 주세요")
                             }
                             innerTextField()
                         }

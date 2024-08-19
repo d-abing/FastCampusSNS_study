@@ -1,13 +1,10 @@
 package com.example.presentation.login
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.domain.usecase.login.LoginUseCase
 import com.example.domain.usecase.login.SetTokenUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
@@ -52,7 +49,6 @@ class LoginViewModel @Inject constructor(
         val password = state.password
         val token = loginUseCase(id, password).getOrThrow()
         setTokenUseCase(token)
-//        postSideEffect(LoginSideEffect.Toast(message = "token = $token"))
         postSideEffect(LoginSideEffect.NavigateToMainActivity)
     }
 }

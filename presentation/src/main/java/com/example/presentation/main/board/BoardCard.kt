@@ -30,7 +30,8 @@ import theme.ConnectedTheme
 
 @Composable
 fun BoardCard(
-    isMine: Boolean,
+    isMyBoard: Boolean,
+    userId: Long,
     boardId: Long,
     profileImageUrl: String? = null,
     username: String,
@@ -50,14 +51,15 @@ fun BoardCard(
                     color = MaterialTheme.colorScheme.primaryContainer,
                     shape = RoundedCornerShape(16.dp)
                 )
-                .padding(horizontal = 4.dp, vertical = 4.dp)
                 .fillMaxWidth()
 
         ) {
             //헤더
             BoardHeader(
-                isMine = isMine,
-                modifier = Modifier.fillMaxWidth(),
+                isMyBoard = isMyBoard,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp, vertical = 8.dp),
                 profileImageUrl = profileImageUrl,
                 username = username,
                 onOptionClick = onOptionClick
@@ -73,36 +75,55 @@ fun BoardCard(
             }
             var maxLines by remember(richTextSate) { mutableStateOf(1) }
             var showMore by remember { mutableStateOf(false) }
+            var showLess by remember { mutableStateOf(false) }
+
             //내용(텍스트)
             BasicRichText(
                 modifier = Modifier
-                    .padding(top = 4.dp)
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp),
+                    .padding(top = 8.dp)
+                    .padding(horizontal = 16.dp)
+                    .fillMaxWidth(),
                 state = richTextSate,
                 maxLines = maxLines,
                 overflow = TextOverflow.Ellipsis,
-                style = TextStyle.Default.copy(color = MaterialTheme.colorScheme.onPrimary),
+                style = TextStyle.Default.copy(color = MaterialTheme.colorScheme.onPrimary, fontSize = MaterialTheme.typography.bodyLarge.fontSize),
                 onTextLayout = { textLayoutResult ->
                     showMore = textLayoutResult.didOverflowHeight
                 }
             )
+
             if(showMore) {
+                showLess = true
                 TextButton(
+                    modifier = Modifier.
+                        padding(start = 4.dp),
                     onClick = {
                         maxLines = Integer.MAX_VALUE
                     }
                 ) {
                     Text(
                         text = "더보기",
-                        style = MaterialTheme.typography.labelLarge
+                        style = MaterialTheme.typography.labelMedium
+                    )
+                }
+            } else if(showLess) {
+                TextButton(
+                    modifier = Modifier.
+                        padding(start = 4.dp),
+                    onClick = {
+                        maxLines = 1
+                    }
+                ) {
+                    Text(
+                        text = "간략히",
+                        style = MaterialTheme.typography.labelMedium
                     )
                 }
             }
+
             // 댓글 버튼
             TextButton(
                 modifier = Modifier
-                    .padding(top = 8.dp)
                     .padding(horizontal = 8.dp)
                     .align(Alignment.End),
                 onClick = {
@@ -115,7 +136,8 @@ fun BoardCard(
     }
 
     CommentDialog(
-        isMine = isMine,
+        isMyBoard = isMyBoard,
+        userId = userId,
         visible = commentDialogVisible,
         comments = comments,
         onDismissRequest = { commentDialogVisible = false },
@@ -130,7 +152,8 @@ fun BoardCard(
 private fun BoardCardPreview() {
     ConnectedTheme {
         BoardCard(
-            isMine = true,
+            isMyBoard = true,
+            userId = -1L,
             boardId = -1L,
             profileImageUrl = null,
             username = "Fast Campus",

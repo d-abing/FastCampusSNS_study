@@ -83,6 +83,7 @@ class BoardViewModel @Inject constructor(
             val comment = Comment(
                 id = commentId,
                 text = text,
+                userId = user.id,
                 username = user.username,
                 profileImageUrl = user.profileImageUrl
             )
@@ -100,10 +101,9 @@ class BoardViewModel @Inject constructor(
         boardId: Long,
         comment: Comment
     ) = intent {
-        val deletedCommentId = deleteCommentUseCase(
-            boardId = boardId,
-            commentId = comment.id
-        ).getOrThrow()
+
+        deleteCommentUseCase(boardId = boardId, commentId = comment.id).getOrThrow()
+
         val newDeletedComments = state.deletedComments + Pair(
             boardId,
             state.deletedComments[boardId].orEmpty() + comment

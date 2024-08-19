@@ -105,7 +105,7 @@ private fun ImageSelectScreen(
                             contentScale = ContentScale.Crop,
                             contentDescription = null,
                         )
-                        if (images.isEmpty()) {
+                        if (selectedImages.isEmpty()) {
                             Text(text = "선택된 이미지가 없습니다.")
                         }
                     }
@@ -122,7 +122,7 @@ private fun ImageSelectScreen(
                         items(
                             count = images.size,
                             key = { index -> images[index].uri }
-                        ) {index ->
+                        ) { index ->
                             val image = images[index]
                             Box(
                                 modifier = Modifier

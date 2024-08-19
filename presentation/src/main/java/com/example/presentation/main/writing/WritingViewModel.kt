@@ -37,11 +37,11 @@ class WritingViewModel @Inject constructor(
         load()
     }
 
-    fun load() = intent {
+    private fun load() = intent {
         val images = getImageListUseCase()
         reduce {
             state.copy(
-                selectedImages = images.firstOrNull()?.let { listOf(it) } ?: emptyList(),
+                selectedImages = emptyList(),
                 images = images
             )
         }

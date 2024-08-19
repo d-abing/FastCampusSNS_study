@@ -1,9 +1,7 @@
 package com.example.data.usecase
 
-import com.example.data.model.LoginParam
 import com.example.data.model.SignUpParam
 import com.example.data.retrofit.UserService
-import com.example.domain.usecase.login.LoginUseCase
 import com.example.domain.usecase.login.SignUpUseCase
 import javax.inject.Inject
 
@@ -19,6 +17,5 @@ class SignUpUseCaseImpl @Inject constructor(
             profileFilePath = ""
         ).toRequestBody()
         userService.signUp(requestBody = requestBody).result == "SUCCESS"
-        true
     }
 }
